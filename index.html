@@ -95,7 +95,7 @@ h1 {
 }
 .s-title::after { content: ''; flex: 1; height: 1px; background: var(--borda); }
 
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
 
 .card {
   border-radius: 16px;
@@ -136,8 +136,13 @@ h1 {
   font-size: 13px;
   font-weight: 600;
 }
+.card-verde  { border-top: 4px solid var(--verde); }
+.card-azul   { border-top: 4px solid var(--azul);  }
+.card-roxo   { border-top: 4px solid #6B3FA0; }
+.card-roxo .card-icon { background: #F5F0FF; }
 .card-verde .card-footer { color: var(--verde); }
 .card-azul  .card-footer { color: var(--azul);  }
+.card-roxo  .card-footer { color: #6B3FA0; }
 
 .info-box {
   background: var(--cinza-bg);
@@ -207,6 +212,18 @@ footer {
       <p>Periodização semanal com séries, cargas e progressão para ganho de força e desempenho.</p>
       <div class="card-footer">
         Ver plano completo
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="avaliacao.html" class="card card-roxo">
+      <div class="card-icon">📊</div>
+      <h2>Avaliação</h2>
+      <p>Registre seu peso, envie fotos e receba análise personalizada da IA sobre sua evolução.</p>
+      <div class="card-footer">
+        Ver avaliação
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
         </svg>

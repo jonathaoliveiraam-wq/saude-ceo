@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação — Saúde CEO</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root{--verde:#2D5A27;--verde-bg:#EFF7EE;--azul:#1A3A5C;--azul-bg:#EBF2FA;--roxo:#6B3FA0;--roxo-bg:#F5F0FF;--laranja:#C4500A;--laranja-bg:#FDF0E8;--cinza:#1A1A1A;--cinza-mid:#555;--cinza-light:#888;--cinza-bg:#F5F4F0;--branco:#FEFCF8;--borda:#E0DDD6}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--branco);color:var(--cinza);min-height:100vh}
+
+/* NAV */
+.topnav{background:white;border-bottom:1px solid var(--borda);padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topnav-home{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--cinza-mid);text-decoration:none}
+.topnav-home:hover{color:var(--roxo)}
+.topnav-links{display:flex;gap:12px}
+.topnav-link{font-size:12px;font-weight:600;text-decoration:none;padding:5px 12px;border-radius:99px}
+.topnav-link.verde{color:var(--verde);background:var(--verde-bg)}
+.topnav-link.azul{color:var(--azul);background:var(--azul-bg)}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#6B3FA0 0%,#1A3A5C 100%);color:white;padding:3rem 2rem 2.5rem;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hi{max-width:780px;margin:0 auto;position:relative;z-index:1}
+.tag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:99px;margin-bottom:1rem}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3rem);line-height:1.1;margin-bottom:.5rem}
+.hsub{font-size:15px;color:rgba(255,255,255,0.7);font-weight:300}
+.hstats{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap}
+.st{border-left:2px solid rgba(255,255,255,0.3);padding-left:1rem}
+.stv{font-size:20px;font-weight:600}
+.stl{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+
+/* MAIN */
+.main{max-width:780px;margin:0 auto;padding:2.5rem 2rem}
+.s-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza-light);margin-bottom:1.2rem;display:flex;align-items:center;gap:8px}
+.s-title::after{content:'';flex:1;height:1px;background:var(--borda)}
+
+/* FORM CARD */
+.card{background:white;border-radius:16px;border:1px solid var(--borda);padding:1.75rem;margin-bottom:1.5rem}
+.card-title{font-size:15px;font-weight:600;margin-bottom:1.25rem;display:flex;align-items:center;gap:8px}
+
+/* INPUTS */
+.field{margin-bottom:1.25rem}
+label{display:block;font-size:12px;font-weight:600;color:var(--cinza-mid);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+input[type=number],input[type=date]{width:100%;padding:10px 14px;border:1.5px solid var(--borda);border-radius:10px;font-family:inherit;font-size:15px;color:var(--cinza);background:var(--branco);outline:none;transition:border-color .2s}
+input[type=number]:focus,input[type=date]:focus{border-color:#6B3FA0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* UPLOAD */
+.upload-area{border:2px dashed var(--borda);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--cinza-bg)}
+.upload-area:hover,.upload-area.dragover{border-color:#6B3FA0;background:var(--roxo-bg)}
+.upload-area input{display:none}
+.upload-icon{font-size:32px;margin-bottom:.75rem}
+.upload-text{font-size:14px;color:var(--cinza-mid)}
+.upload-text span{color:#6B3FA0;font-weight:600}
+.upload-hint{font-size:12px;color:var(--cinza-light);margin-top:4px}
+.previews{display:flex;gap:10px;flex-wrap:wrap;margin-top:1rem}
+.preview-item{position:relative;width:80px;height:80px}
+.preview-item img{width:100%;height:100%;object-fit:cover;border-radius:8px;border:1px solid var(--borda)}
+.preview-remove{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#ef4444;color:white;border:none;border-radius:50%;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* BUTTON */
+.btn-analyze{width:100%;padding:14px;background:linear-gradient(135deg,#6B3FA0,#1A3A5C);color:white;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-analyze:hover{opacity:.9}
+.btn-analyze:disabled{opacity:.5;cursor:not-allowed}
+
+/* RESULT */
+.result-card{background:white;border-radius:16px;border:1.5px solid #6B3FA0;padding:1.75rem;margin-top:1.5rem;display:none}
+.result-card.show{display:block}
+.result-header{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--borda)}
+.result-header h2{font-family:'DM Serif Display',serif;font-size:1.4rem}
+.result-body{font-size:14px;line-height:1.8;color:var(--cinza-mid)}
+.result-body h2{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--cinza);margin:1.25rem 0 .5rem}
+.result-body h2:first-child{margin-top:0}
+.result-body p{margin-bottom:.75rem}
+.result-body strong{color:var(--cinza);font-weight:600}
+.result-body ul{padding-left:1.25rem;margin-bottom:.75rem}
+.result-body li{margin-bottom:.25rem}
+.loader{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* CHART */
+.chart-wrap{position:relative;height:220px}
+
+/* HISTORY TABLE */
+.history-table{width:100%;border-collapse:collapse;font-size:13px}
+.history-table th{background:var(--cinza-bg);padding:8px 12px;text-align:left;font-weight:600;font-size:11px;color:var(--cinza-mid);text-transform:uppercase;letter-spacing:.05em}
+.history-table td{padding:10px 12px;border-top:1px solid var(--borda)}
+.history-table tr:hover td{background:var(--cinza-bg)}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px}
+.badge-down{background:#dcfce7;color:#166534}
+.badge-up{background:#fee2e2;color:#991b1b}
+.badge-same{background:var(--cinza-bg);color:var(--cinza-mid)}
+.btn-del{background:none;border:none;color:var(--cinza-light);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px}
+.btn-del:hover{color:#ef4444;background:#fee2e2}
+
+/* EMPTY */
+.empty{text-align:center;padding:3rem 2rem;color:var(--cinza-light)}
+.empty-icon{font-size:40px;margin-bottom:1rem}
+
+/* API KEY WARN */
+.warn-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:1.25rem 1.5rem;font-size:13px;color:#92400e;line-height:1.6;margin-bottom:1.5rem}
+.warn-box strong{color:#78350f}
+.warn-box code{background:#fef3c7;padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px}
+
+footer{text-align:center;padding:2rem;font-size:12px;color:var(--cinza-light);border-top:1px solid var(--borda);margin-top:2rem}
+@media(max-width:540px){.row{grid-template-columns:1fr}.topnav-links{gap:8px}.topnav-link{font-size:11px;padding:4px 10px}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-home">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    Saúde CEO
+  </a>
+  <div class="topnav-links">
+    <a href="dieta_jonatha.html" class="topnav-link verde">🥗 Dieta</a>
+    <a href="treino_jonatha.html" class="topnav-link azul">🏋️ Treino</a>
+  </div>
+</nav>
+
+<header class="header">
+  <div class="hi">
+    <span class="tag">Acompanhamento</span>
+    <h1>Avaliação de<br><em>Progresso</em></h1>
+    <p class="hsub">Registre seu peso, fotos e receba análise da IA</p>
+    <div class="hstats">
+      <div class="st"><div class="stv" id="stat-entries">0</div><div class="stl">Registros</div></div>
+      <div class="st"><div class="stv" id="stat-current">—</div><div class="stl">Peso atual</div></div>
+      <div class="st"><div class="stv" id="stat-diff">—</div><div class="stl">vs. início</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- WARN API KEY -->
+  <div class="warn-box" id="api-warn" style="display:none">
+    <strong>Configuração necessária:</strong> Para usar a análise com IA, adicione a variável de ambiente <code>ANTHROPIC_API_KEY</code> no painel do Vercel em <strong>Settings → Environment Variables</strong>. Enquanto isso, você já pode registrar seu peso e acompanhar o gráfico normalmente.
+  </div>
+
+  <!-- NOVO REGISTRO -->
+  <p class="s-title">Novo Registro</p>
+
+  <div class="card">
+    <div class="card-title">📊 Dados do dia</div>
+    <div class="row">
+      <div class="field">
+        <label>Data</label>
+        <input type="date" id="inp-date">
+      </div>
+      <div class="field">
+        <label>Peso (kg)</label>
+        <input type="number" id="inp-weight" placeholder="Ex: 128.5" step="0.1" min="50" max="300">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Fotos <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--cinza-light)">(opcional — 1 a 3 fotos)</span></label>
+      <div class="upload-area" id="upload-area" onclick="document.getElementById('inp-photos').click()">
+        <input type="file" id="inp-photos" accept="image/*" multiple>
+        <div class="upload-icon">📸</div>
+        <div class="upload-text">Clique ou arraste fotos aqui<br><span>frente, lado e costas</span></div>
+        <div class="upload-hint">JPG ou PNG · máx 5MB por foto</div>
+      </div>
+      <div class="previews" id="previews"></div>
+    </div>
+
+    <button class="btn-analyze" id="btn-analyze" onclick="analyze()">
+      <span id="btn-text">🤖 Analisar com IA</span>
+    </button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="result-card" id="result-card">
+    <div class="result-header">
+      <span style="font-size:24px">🤖</span>
+      <h2>Análise da IA</h2>
+    </div>
+    <div class="result-body" id="result-body"></div>
+  </div>
+
+  <!-- GRÁFICO -->
+  <p class="s-title" style="margin-top:2.5rem">Evolução do Peso</p>
+  <div class="card">
+    <div id="chart-empty" class="empty" style="display:none">
+      <div class="empty-icon">📈</div>
+      <p>Registre seu primeiro peso para ver o gráfico</p>
+    </div>
+    <div class="chart-wrap" id="chart-wrap">
+      <canvas id="weight-chart"></canvas>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <p class="s-title">Histórico</p>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div id="history-empty" class="empty" style="display:none">
+      <div class="empty-icon">📋</div>
+      <p>Nenhum registro ainda</p>
+    </div>
+    <table class="history-table" id="history-table">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Peso</th>
+          <th>Variação</th>
+          <th>Análise</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="history-body"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>Saúde CEO · Avaliação de Progresso · 2026</footer>
+
+<script>
+const STORAGE_KEY = 'saude_ceo_records';
+let chartInstance = null;
+let selectedImages = [];
+
+// --- STORAGE ---
+function getRecords() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+}
+function saveRecords(records) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('inp-date').value = new Date().toISOString().split('T')[0];
+  setupUpload();
+  render();
+  checkApiKey();
+});
+
+async function checkApiKey() {
+  try {
+    const r = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ weight: 0, date: 'test', _ping: true })
+    });
+    const d = await r.json();
+    if (d.error && d.error.includes('ANTHROPIC_API_KEY')) {
+      document.getElementById('api-warn').style.display = 'block';
+    }
+  } catch (_) {}
+}
+
+// --- UPLOAD ---
+function setupUpload() {
+  const area = document.getElementById('upload-area');
+  const input = document.getElementById('inp-photos');
+
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('dragover'); });
+  area.addEventListener('dragleave', () => area.classList.remove('dragover'));
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('dragover');
+    addFiles(Array.from(e.dataTransfer.files));
+  });
+  input.addEventListener('change', () => {
+    addFiles(Array.from(input.files));
+    input.value = '';
+  });
+}
+
+function addFiles(files) {
+  const allowed = files.filter(f => f.type.startsWith('image/') && f.size <= 5 * 1024 * 1024);
+  const remaining = 3 - selectedImages.length;
+  allowed.slice(0, remaining).forEach(f => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      selectedImages.push({ file: f, dataUrl: e.target.result });
+      renderPreviews();
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+function renderPreviews() {
+  const container = document.getElementById('previews');
+  container.innerHTML = selectedImages.map((img, i) => `
+    <div class="preview-item">
+      <img src="${img.dataUrl}" alt="foto ${i+1}">
+      <button class="preview-remove" onclick="removeImage(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function removeImage(i) {
+  selectedImages.splice(i, 1);
+  renderPreviews();
+}
+
+// --- RESIZE IMAGE ---
+function resizeImage(dataUrl, maxWidth = 1024) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, maxWidth / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', 0.85));
+    };
+    img.src = dataUrl;
+  });
+}
+
+// --- ANALYZE ---
+async function analyze() {
+  const weight = parseFloat(document.getElementById('inp-weight').value);
+  const date = document.getElementById('inp-date').value;
+
+  if (!weight || !date) {
+    alert('Preencha a data e o peso antes de continuar.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-analyze');
+  const btnText = document.getElementById('btn-text');
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="loader"></span> Analisando...';
+
+  try {
+    const records = getRecords();
+    const prevRecord = records[records.length - 1];
+    const previousWeight = prevRecord ? prevRecord.weight : null;
+
+    // Resize and prepare images
+    const images = [];
+    for (const img of selectedImages) {
+      const resized = await resizeImage(img.dataUrl);
+      const base64 = resized.split(',')[1];
+      const mediaType = 'image/jpeg';
+      images.push({ data: base64, mediaType });
+    }
+
+    const body = { weight, date, previousWeight, images };
+    const r = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const d = await r.json();
+
+    if (d.error) throw new Error(d.error);
+
+    // Save record
+    const newRecord = {
+      id: Date.now(),
+      date,
+      weight,
+      analysis: d.analysis,
+      hasPhotos: images.length > 0,
+      createdAt: new Date().toISOString()
+    };
+    records.push(newRecord);
+    saveRecords(records);
+
+    // Show result
+    const resultCard = document.getElementById('result-card');
+    const resultBody = document.getElementById('result-body');
+    resultCard.classList.add('show');
+    resultBody.innerHTML = marked.parse(d.analysis);
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Reset form
+    selectedImages = [];
+    renderPreviews();
+    document.getElementById('inp-weight').value = '';
+
+    render();
+  } catch (err) {
+    alert('Erro ao analisar: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btnText.innerHTML = '🤖 Analisar com IA';
+  }
+}
+
+// --- RENDER ---
+function render() {
+  const records = getRecords();
+  updateStats(records);
+  renderChart(records);
+  renderHistory(records);
+}
+
+function updateStats(records) {
+  document.getElementById('stat-entries').textContent = records.length;
+
+  if (records.length === 0) {
+    document.getElementById('stat-current').textContent = '—';
+    document.getElementById('stat-diff').textContent = '—';
+    return;
+  }
+
+  const last = records[records.length - 1];
+  const first = records[0];
+  document.getElementById('stat-current').textContent = last.weight + 'kg';
+
+  const diff = (last.weight - first.weight).toFixed(1);
+  const prefix = diff > 0 ? '+' : '';
+  document.getElementById('stat-diff').textContent = prefix + diff + 'kg';
+}
+
+function renderChart(records) {
+  const wrap = document.getElementById('chart-wrap');
+  const empty = document.getElementById('chart-empty');
+
+  if (records.length < 2) {
+    wrap.style.display = records.length === 0 ? 'none' : 'block';
+    empty.style.display = records.length === 0 ? 'block' : 'none';
+    if (records.length === 1) {
+      // Show single point chart
+    }
+  } else {
+    wrap.style.display = 'block';
+    empty.style.display = 'none';
+  }
+
+  if (records.length === 0) return;
+
+  const labels = records.map(r => {
+    const [y, m, d] = r.date.split('-');
+    return `${d}/${m}`;
+  });
+  const data = records.map(r => r.weight);
+
+  if (chartInstance) chartInstance.destroy();
+
+  chartInstance = new Chart(document.getElementById('weight-chart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Peso (kg)',
+          data,
+          borderColor: '#6B3FA0',
+          backgroundColor: 'rgba(107,63,160,0.08)',
+          borderWidth: 2.5,
+          pointBackgroundColor: '#6B3FA0',
+          pointRadius: 5,
+          tension: 0.3,
+          fill: true,
+        },
+        {
+          label: 'Meta (120kg)',
+          data: new Array(labels.length).fill(120),
+          borderColor: '#2D5A27',
+          borderWidth: 1.5,
+          borderDash: [6, 3],
+          pointRadius: 0,
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { font: { family: 'DM Sans', size: 12 }, boxWidth: 14 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.raw} kg` } }
+      },
+      scales: {
+        y: {
+          min: Math.min(...data, 120) - 5,
+          max: Math.max(...data) + 3,
+          grid: { color: '#f0ede8' },
+          ticks: { font: { family: 'DM Sans', size: 12 }, callback: v => v + 'kg' }
+        },
+        x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 12 } } }
+      }
+    }
+  });
+}
+
+function renderHistory(records) {
+  const tbody = document.getElementById('history-body');
+  const empty = document.getElementById('history-empty');
+  const table = document.getElementById('history-table');
+
+  if (records.length === 0) {
+    empty.style.display = 'block';
+    table.style.display = 'none';
+    return;
+  }
+
+  empty.style.display = 'none';
+  table.style.display = 'table';
+
+  const rows = [...records].reverse().map((r, idx) => {
+    const prev = records[records.length - 1 - idx - 1];
+    let badge = '';
+    if (prev) {
+      const d = (r.weight - prev.weight).toFixed(1);
+      if (d < 0) badge = `<span class="badge badge-down">${d}kg</span>`;
+      else if (d > 0) badge = `<span class="badge badge-up">+${d}kg</span>`;
+      else badge = `<span class="badge badge-same">=</span>`;
+    }
+    const [y, m, day] = r.date.split('-');
+    return `<tr>
+      <td>${day}/${m}/${y}</td>
+      <td><strong>${r.weight}kg</strong></td>
+      <td>${badge || '—'}</td>
+      <td>${r.hasPhotos ? '📸 com fotos' : '—'}</td>
+      <td><button class="btn-del" onclick="deleteRecord(${r.id})" title="Remover">✕</button></td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = rows.join('');
+}
+
+function deleteRecord(id) {
+  if (!confirm('Remover este registro?')) return;
+  const records = getRecords().filter(r => r.id !== id);
+  saveRecords(records);
+  render();
+}
+</script>
+</body>
+</html>
