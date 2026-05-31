@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dieta Jonatha — Plano Alimentar</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde: #2D5A27;
+  --verde-light: #4A8C42;
+  --verde-bg: #EFF7EE;
+  --verde-mid: #C8E6C2;
+  --laranja: #C4500A;
+  --laranja-bg: #FDF0E8;
+  --cinza: #1A1A1A;
+  --cinza-mid: #555;
+  --cinza-light: #888;
+  --cinza-bg: #F5F4F0;
+  --branco: #FEFCF8;
+  --borda: #E0DDD6;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--branco); color: var(--cinza); min-height: 100vh; }
+
+.header {
+  background: var(--verde);
+  color: white;
+  padding: 3rem 2rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+.header-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.header-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.9);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 1rem;
+}
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  margin-bottom: .5rem;
+}
+.header-sub { font-size: 15px; color: rgba(255,255,255,0.7); font-weight: 300; }
+.header-stats { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+.stat { border-left: 2px solid rgba(255,255,255,0.3); padding-left: 1rem; }
+.stat-val { font-size: 22px; font-weight: 600; }
+.stat-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.main { max-width: 760px; margin: 0 auto; padding: 2rem; }
+
+.alerta {
+  background: var(--laranja-bg);
+  border-left: 3px solid var(--laranja);
+  border-radius: 0 10px 10px 0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+  font-size: 13.5px;
+  color: #6B2D06;
+  line-height: 1.6;
+}
+.alerta strong { color: var(--laranja); }
+
+.s-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cinza-light);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.s-title::after { content: ''; flex: 1; height: 1px; background: var(--borda); }
+
+.macros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 2.5rem;
+}
+.macro-card { background: var(--cinza-bg); border-radius: 12px; padding: 1rem; text-align: center; }
+.macro-val { font-size: 24px; font-weight: 600; color: var(--verde); }
+.macro-label { font-size: 11px; color: var(--cinza-light); margin-top: 3px; }
+.macro-unit { font-size: 12px; color: var(--cinza-mid); }
+
+.refeicoes { margin-bottom: 2.5rem; }
+.ref-card { border: 1px solid var(--borda); border-radius: 14px; overflow: hidden; margin-bottom: 12px; transition: box-shadow .2s; }
+.ref-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+.ref-header { display: flex; align-items: center; gap: 12px; padding: 1rem 1.25rem; cursor: pointer; background: white; user-select: none; }
+.ref-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.ref-meta { flex: 1; }
+.ref-nome { font-weight: 600; font-size: 15px; }
+.ref-horario { font-size: 12px; color: var(--cinza-light); margin-top: 1px; }
+.ref-calorias { font-size: 13px; font-weight: 600; color: var(--verde); background: var(--verde-bg); padding: 4px 10px; border-radius: 99px; }
+.ref-chevron { font-size: 18px; color: var(--cinza-light); transition: transform .25s; }
+.ref-body { display: none; padding: 0 1.25rem 1.25rem; background: white; border-top: 1px solid var(--borda); }
+.ref-body.open { display: block; }
+.ref-chevron.open { transform: rotate(180deg); }
+
+.item-linha { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--cinza-bg); font-size: 14px; }
+.item-linha:last-child { border-bottom: none; }
+.item-nome { color: var(--cinza); }
+.item-qtd { font-weight: 500; color: var(--cinza-mid); font-size: 13px; white-space: nowrap; margin-left: 8px; }
+.item-obs { background: var(--verde-bg); border-radius: 8px; padding: .625rem .875rem; font-size: 12.5px; color: var(--verde); margin-top: .75rem; line-height: 1.5; }
+.item-sub { background: var(--cinza-bg); border-radius: 8px; padding: .625rem .875rem; font-size: 12px; color: var(--cinza-mid); margin-top: .5rem; line-height: 1.6; }
+.item-sub strong { color: var(--cinza); }
+.opcao-title { font-size: 12px; font-weight: 600; color: var(--verde); margin-bottom: 8px; margin-top: 16px; }
+.opcao-title:first-child { margin-top: 4px; }
+
+.lista-dupla { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2.5rem; }
+@media(max-width:520px){ .lista-dupla { grid-template-columns: 1fr; } }
+.lista-box { border-radius: 12px; padding: 1rem 1.25rem; }
+.lista-box.ok { background: var(--verde-bg); }
+.lista-box.nao { background: var(--laranja-bg); }
+.lista-box-title { font-size: 12px; font-weight: 600; margin-bottom: .75rem; text-transform: uppercase; letter-spacing: .05em; }
+.lista-box.ok .lista-box-title { color: var(--verde); }
+.lista-box.nao .lista-box-title { color: var(--laranja); }
+.lista-item { font-size: 13px; padding: 3px 0; display: flex; align-items: center; gap: 6px; line-height: 1.4; }
+.lista-box.ok .lista-item { color: #2D5A27; }
+.lista-box.nao .lista-item { color: #6B2D06; }
+
+.regras { margin-bottom: 2.5rem; }
+.regra-item { display: flex; gap: 12px; padding: .875rem 0; border-bottom: 1px solid var(--borda); align-items: flex-start; }
+.regra-item:last-child { border-bottom: none; }
+.regra-num { width: 28px; height: 28px; border-radius: 8px; background: var(--verde); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.regra-texto { font-size: 14px; line-height: 1.55; color: var(--cinza-mid); }
+.regra-texto strong { color: var(--cinza); }
+
+.receitas { margin-bottom: 2.5rem; }
+.receita-card { border: 1px solid var(--borda); border-radius: 14px; overflow: hidden; margin-bottom: 12px; }
+.receita-header { display: flex; align-items: center; gap: 12px; padding: 1rem 1.25rem; cursor: pointer; background: white; user-select: none; }
+.receita-tag { font-size: 11px; font-weight: 600; background: var(--verde-bg); color: var(--verde); padding: 3px 10px; border-radius: 99px; }
+.receita-nome { font-weight: 600; font-size: 15px; flex: 1; }
+.receita-kcal { font-size: 12px; color: var(--cinza-light); }
+.receita-body { display: none; padding: 1rem 1.25rem; background: white; border-top: 1px solid var(--borda); font-size: 13.5px; line-height: 1.7; color: var(--cinza-mid); }
+.receita-body.open { display: block; }
+.receita-body strong { color: var(--cinza); }
+.receita-body ul { margin: .5rem 0 .5rem 1rem; }
+.receita-body li { margin-bottom: 3px; }
+
+.ansiedade-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 10px; margin-bottom: 2.5rem; }
+.ans-card { background: var(--cinza-bg); border-radius: 12px; padding: .875rem; text-align: center; }
+.ans-emoji { font-size: 24px; margin-bottom: 6px; }
+.ans-nome { font-size: 13px; font-weight: 600; color: var(--cinza); }
+.ans-detalhe { font-size: 11px; color: var(--cinza-light); margin-top: 3px; line-height: 1.4; }
+
+.footer { background: var(--cinza-bg); border-top: 1px solid var(--borda); padding: 1.5rem 2rem; text-align: center; font-size: 12px; color: var(--cinza-light); }
+.footer strong { color: var(--cinza-mid); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-tag">Plano alimentar personalizado</div>
+    <h1>Dieta do<br><em>Jonatha</em></h1>
+    <p class="header-sub">Baseado no protocolo da Dra. Carla Mariana · Adaptado às suas preferências</p>
+    <div class="header-stats">
+      <div class="stat"><div class="stat-val">130 kg</div><div class="stat-label">Peso atual</div></div>
+      <div class="stat"><div class="stat-val">120 kg</div><div class="stat-label">Meta fase 1</div></div>
+      <div class="stat"><div class="stat-val">1,83 m</div><div class="stat-label">Altura</div></div>
+      <div class="stat"><div class="stat-val">~1.800 kcal</div><div class="stat-label">Meta calórica</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+<div class="s-title">Metas nutricionais diárias</div>
+  <div class="macros">
+    <div class="macro-card"><div class="macro-val">~1.800</div><div class="macro-unit">kcal/dia</div><div class="macro-label">Calorias</div></div>
+    <div class="macro-card"><div class="macro-val">150g</div><div class="macro-unit">proteína</div><div class="macro-label">Mínimo diário</div></div>
+    <div class="macro-card"><div class="macro-val">180g</div><div class="macro-unit">carboidrato</div><div class="macro-label">Complexo</div></div>
+    <div class="macro-card"><div class="macro-val">4L</div><div class="macro-unit">água/dia</div><div class="macro-label">Obrigatório</div></div>
+  </div>
+
+  <div class="s-title">Refeições do dia</div>
+  <div class="refeicoes">
+
+    <!-- CAFÉ -->
+    <div class="ref-card">
+      <div class="ref-header" onclick="toggle(this)">
+        <div class="ref-icon" style="background:#FFF8E1">🌅</div>
+        <div class="ref-meta">
+          <div class="ref-nome">Café da manhã</div>
+          <div class="ref-horario">09h30 · após o treino</div>
+        </div>
+        <div class="ref-calorias">~420 kcal</div>
+        <div class="ref-chevron">›</div>
+      </div>
+      <div class="ref-body open">
+        <div style="font-size:12px;font-weight:600;color:#C4500A;margin-bottom:8px;margin-top:4px">PRÉ-TREINO — 07h00 (antes de sair)</div>
+        <div class="item-linha"><span class="item-nome">2 bananas amassadas + creatina misturada</span><span class="item-qtd">150g banana · 3–5g creatina</span></div>
+        <div class="item-obs">💡 Amasse as bananas com um garfo, mistura a creatina direto — fica tipo uma pastinha. Prático, sem precisar de líquido separado. Come e vai pro treino.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--verde);margin-bottom:8px;margin-top:16px">CAFÉ DA MANHÃ — 09h30 (ao chegar do treino)</div>
+        <div class="item-linha"><span class="item-nome">Tapioca <em>ou</em> cuscuz cozido</span><span class="item-qtd">60g tapioca / 120g cuscuz</span></div>
+        <div class="item-linha"><span class="item-nome">Ovo mexido ou cozido (frigideira seca ou spray)</span><span class="item-qtd">2 unidades</span></div>
+        <div class="item-linha"><span class="item-nome">Queijo coalho ou minas</span><span class="item-qtd">30g</span></div>
+        <div class="item-linha"><span class="item-nome">Fruta (mamão, banana, melancia, manga)</span><span class="item-qtd">100g</span></div>
+        <div class="item-obs">
+          💡 <strong>Crepioca:</strong> misture os ovos com a goma de tapioca + pitada de sal na frigideira seca. Recheie com o queijo. Proteína alta, sem fritura — muito melhor que tapioca comum.
+        </div>
+        <div class="item-sub">
+          <strong>Manteiga:</strong> máximo 5g (1 pontinha de faca) se quiser. Ovo frito e pão frito estão fora — dobram as calorias sem benefício. Se quiser pão, prefira integral torrado seco, sem fritar.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ALMOÇO -->
+    <div class="ref-card">
+      <div class="ref-header" onclick="toggle(this)">
+        <div class="ref-icon" style="background:#E8F5E9">🍽️</div>
+        <div class="ref-meta">
+          <div class="ref-nome">Almoço</div>
+          <div class="ref-horario">12h00 – 13h00</div>
+        </div>
+        <div class="ref-calorias">~520 kcal</div>
+        <div class="ref-chevron">›</div>
+      </div>
+      <div class="ref-body">
+        <div class="item-linha"><span class="item-nome">Peito de frango grelhado <em>ou</em> carne magra (alcatra, patinho, contrafilé)</span><span class="item-qtd">150g / 120g</span></div>
+        <div class="item-linha"><span class="item-nome">Arroz branco cozido</span><span class="item-qtd">100g</span></div>
+        <div class="item-linha"><span class="item-nome">Feijão carioca (sem calabresa, charque ou osso)</span><span class="item-qtd">100g</span></div>
+        <div class="item-linha"><span class="item-nome">Tomate — à vontade ✅</span><span class="item-qtd">livre</span></div>
+        <div class="item-linha"><span class="item-nome">Cenoura crua ralada — à vontade ✅</span><span class="item-qtd">1 cenoura média</span></div>
+        <div class="item-linha"><span class="item-nome">Beterraba — moderação ⚠️</span><span class="item-qtd">2–3 fatias (não o prato)</span></div>
+        <div class="item-obs">
+          🥗 Tempere a salada com azeite (1 fio fino), sal e limão. Sem maionese, sem molho industrializado. Cenoura crua pode à vontade. Beterraba tem mais açúcar natural — controle a porção.
+        </div>
+        <div class="item-sub">
+          <strong>Substituições arroz:</strong> batata inglesa cozida 250g — ou — abóbora cabotiã cozida 250g
+        </div>
+      </div>
+    </div>
+
+    <!-- LANCHE TARDE -->
+    <div class="ref-card">
+      <div class="ref-header" onclick="toggle(this)">
+        <div class="ref-icon" style="background:#FFF3E0">🍉</div>
+        <div class="ref-meta">
+          <div class="ref-nome">Lanche da tarde</div>
+          <div class="ref-horario">15h30 – 16h30 · escolha 1 opção</div>
+        </div>
+        <div class="ref-calorias">~280 kcal</div>
+        <div class="ref-chevron">›</div>
+      </div>
+      <div class="ref-body">
+        <div class="opcao-title">OPÇÃO A — Salada de frutas</div>
+        <div class="item-linha"><span class="item-nome">Melancia + melão + manga picados</span><span class="item-qtd">150–200g no total</span></div>
+        <div class="item-obs">🍉 Essa é a opção mais fácil pra você. Manga tem mais açúcar, então não exagere na manga — equilibre com mais melancia. Sem açúcar, sem leite condensado, sem creme.</div><div class="opcao-title">OPÇÃO C — Tapioca com recheio proteico</div>
+        <div class="item-linha"><span class="item-nome">Tapioca (crepioca)</span><span class="item-qtd">60g goma + 2 ovos</span></div>
+        <div class="item-linha"><span class="item-nome">Requeijão light ou queijo coalho</span><span class="item-qtd">30g</span></div>
+        <div class="item-linha"><span class="item-nome">Fruta à escolha</span><span class="item-qtd">100g</span></div>
+      </div>
+    </div>
+
+    <!-- JANTAR -->
+    <div class="ref-card">
+      <div class="ref-header" onclick="toggle(this)">
+        <div class="ref-icon" style="background:#E3F2FD">🌙</div>
+        <div class="ref-meta">
+          <div class="ref-nome">Jantar</div>
+          <div class="ref-horario">19h00 – 20h00</div>
+        </div>
+        <div class="ref-calorias">~440 kcal</div>
+        <div class="ref-chevron">›</div>
+      </div>
+      <div class="ref-body">
+        <div class="item-linha"><span class="item-nome">Peito de frango grelhado <em>ou</em> carne magra</span><span class="item-qtd">150g / 120g</span></div>
+        <div class="item-linha"><span class="item-nome">Arroz branco <em>ou</em> batata cozida <em>ou</em> abóbora cabotiã</span><span class="item-qtd">100g / 220g / 250g</span></div>
+        <div class="item-linha"><span class="item-nome">Tomate + cenoura crua + beterraba (porção)</span><span class="item-qtd">à vontade / moderação</span></div>
+        <div class="item-obs">💡 No jantar não tem feijão — mais leve. Se quiser reduzir carboidrato à noite, troque o arroz pela abóbora cabotiã cozida — sacia muito e tem bem menos caloria.</div>
+      </div>
+    </div>
+
+    <!-- CEIA -->
+    <div class="ref-card">
+      <div class="ref-header" onclick="toggle(this)">
+        <div class="ref-icon" style="background:#F3E5F5">🌛</div>
+        <div class="ref-meta">
+          <div class="ref-nome">Ceia</div>
+          <div class="ref-horario">21h30 – 22h00 · antes de dormir</div>
+        </div>
+        <div class="ref-calorias">~150 kcal</div>
+        <div class="ref-chevron">›</div>
+      </div>
+      <div class="ref-body"><div class="opcao-title">OPÇÃO B — Gelatina + fruta</div>
+        <div class="item-linha"><span class="item-nome">Gelatina diet/zero</span><span class="item-qtd">à vontade</span></div>
+        <div class="item-linha"><span class="item-nome">Fruta picada por cima (opcional)</span><span class="item-qtd">100g</span></div>
+
+        <div class="opcao-title">OPÇÃO C — Ovo mexido leve</div>
+        <div class="item-linha"><span class="item-nome">Ovo mexido (frigideira seca)</span><span class="item-qtd">2 ovos</span></div>
+        <div class="item-linha"><span class="item-nome">Tomate picado</span><span class="item-qtd">à vontade</span></div>
+        <div class="item-obs">💡 Gelatina diet é zero caloria e mata a vontade de comer doce à noite. Pode fazer uma travessa grande e deixar na geladeira para a semana toda.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECEITAS FIT -->
+  <div class="s-title">Receitas fit que você vai gostar</div>
+  <div class="receitas">
+
+    <div class="receita-card">
+      <div class="receita-header" onclick="toggleReceita(this)">
+        <div class="receita-tag">Pizza</div>
+        <div class="receita-nome">Pizza de tapioca fit</div>
+        <div class="receita-kcal">~320 kcal</div>
+        <div class="ref-chevron">›</div>
+      </div>
+      <div class="receita-body">
+        <strong>Ingredientes:</strong>
+        <ul>
+          <li>Goma de tapioca: 60g</li>
+          <li>Queijo mussarela light: 30g</li>
+          <li>Tomate em fatias: à vontade</li>
+          <li>Frango desfiado temperado: 60g</li>
+          <li>Orégano e sal a gosto</li>
+        </ul>
+        <strong>Modo de preparo:</strong> Espalhe a goma na frigideira seca em fogo médio até firmar. Vire, coloque o queijo e o frango, tampe por 2 minutos até derreter. Finalize com tomate e orégano. Fica no ponto de pizza mesmo — crocante nas bordas.
+      </div>
+    </div>
+
+  <!-- ANSIEDADE -->
+  <div class="s-title">Ansiedade alimentar — o que comer sem culpa</div>
+  <div class="ansiedade-grid">
+    <div class="ans-card">
+      <div class="ans-emoji">🍅</div>
+      <div class="ans-nome">Tomate cereja</div>
+      <div class="ans-detalhe">À vontade. Mastigável, refrescante, zero culpa</div>
+    </div>
+    <div class="ans-card">
+      <div class="ans-emoji">🥕</div>
+      <div class="ans-nome">Cenoura crua</div>
+      <div class="ans-detalhe">Em palitinhos. Crocante, mata vontade de mastigar</div>
+    </div>
+    <div class="ans-card">
+      <div class="ans-emoji">🍿</div>
+      <div class="ans-nome">Pipoca fit</div>
+      <div class="ans-detalhe">40g de milho, sem manteiga. ~120 kcal, sacia muito</div>
+    </div>
+    <div class="ans-card">
+      <div class="ans-emoji">🟥</div>
+      <div class="ans-nome">Gelatina diet</div>
+      <div class="ans-detalhe">Zero caloria. Faça uma travessa e deixe na geladeira</div>
+    </div>
+    <div class="ans-card">
+      <div class="ans-emoji">🍌</div>
+      <div class="ans-nome">Banana</div>
+      <div class="ans-detalhe">1 unidade. Sacia rápido, não exagere</div>
+    </div>
+    <div class="ans-card">
+      <div class="ans-emoji">💧</div>
+      <div class="ans-nome">Água com gás + limão</div>
+      <div class="ans-detalhe">Muitas vezes ansiedade é sede. Toma antes de beliscar</div>
+    </div>
+  </div>
+
+  <!-- PODE / NÃO PODE -->
+  <div class="s-title">Alimentos e bebidas</div>
+  <div class="lista-dupla">
+    <div class="lista-box ok">
+      <div class="lista-box-title">✓ Pode e deve</div>
+      <div class="lista-item">🍅 Tomate (à vontade)</div>
+      <div class="lista-item">🥕 Cenoura crua (à vontade)</div>
+      <div class="lista-item">🟣 Beterraba (moderação — 2–3 fatias)</div>
+      <div class="lista-item">🍉 Melancia, melão, manga (porção)</div>
+      <div class="lista-item">🍌 Frutas em geral com moderação</div>
+      <div class="lista-item">🍗 Frango, carne magra, ovo</div>
+      <div class="lista-item">🌽 Cuscuz, tapioca, arroz</div>
+      <div class="lista-item">🫘 Feijão (sem gordura)</div>
+      <div class="lista-item">🧀 Queijo coalho, minas, muçarela</div>
+      <div class="lista-item">☕ Café preto ou com adoçante (à vontade no dia)</div>
+      <div class="lista-item">🍋 Suco natural sem açúcar</div>
+      <div class="lista-item">🧉 Tererê (limão, hortelã, abacaxi) — sem açúcar</div>
+      <div class="lista-item">🫧 Água com gás + limão</div>
+      <div class="lista-item">🟥 Gelatina diet — à vontade</div>
+      <div class="lista-item">🍿 Pipoca sem manteiga (40g)</div>
+      <div class="lista-item">🥤 Refri zero (1x/dia no máx)</div>
+    </div>
+    <div class="lista-box nao">
+      <div class="lista-box-title">✗ Evitar ou eliminar</div>
+      <div class="lista-item">🍳 Ovo frito / pão frito</div>
+      <div class="lista-item">🧂 Feijão com calabresa ou charque</div>
+      <div class="lista-item">🧃 Suco com açúcar / refrigerante comum</div>
+      <div class="lista-item">🍫 Doces, biscoitos, ultraprocessados</div>
+      <div class="lista-item">🍕 Frituras em geral</div>
+      <div class="lista-item">🍺 Álcool (bloqueia queima de gordura 24–48h)</div>
+      <div class="lista-item">🧈 Manteiga em excesso (máx 5g)</div>
+      <div class="lista-item">🥫 Embutidos: salsicha, mortadela</div>
+      <div class="lista-item">🥄 Molhos industrializados, maionese</div>
+      <div class="lista-item">🧀 Requeijão comum (use só o light)</div>
+    </div>
+  </div>
+
+  <!-- REGRAS -->
+  <div class="s-title">Regras de ouro</div>
+  <div class="regras">
+    <div class="regra-item">
+      <div class="regra-num">1</div>
+      <div class="regra-texto"><strong>4 litros de água por dia.</strong> Coloca uma garrafa de 2L na mesa e outra na geladeira. Ansiedade alimentar muitas vezes é sede — toma água antes de beliscar qualquer coisa.</div>
+    </div>
+    <div class="regra-item">
+      <div class="regra-num">2</div>
+      <div class="regra-texto"><strong>Não pule refeições.</strong> Pular almoço ou jantar faz você compensar dobrado na próxima e desacelera o metabolismo.</div>
+    </div>
+    <div class="regra-item">
+      <div class="regra-num">3</div>
+      <div class="regra-texto"><strong>Proteína em todas as refeições.</strong> Ovo, frango, carne, whey — sempre. Meta mínima: 150g de proteína por dia.</div>
+    </div>
+    <div class="regra-item">
+      <div class="regra-num">4</div>
+      <div class="regra-texto"><strong>Creatina todo dia.</strong> Pode misturar com suco natural, água, ou bater com banana. O que importa é tomar diariamente, não o horário exato.</div>
+    </div>
+    <div class="regra-item">
+      <div class="regra-num">5</div>
+      <div class="regra-texto"><strong>Fora de casa:</strong> vá de prato feito tradicional (arroz + feijão + proteína grelhada + salada). Evite buffet com fritos e fast food nos dias de semana.</div>
+    </div>
+    <div class="regra-item">
+      <div class="regra-num">6</div>
+      <div class="regra-texto"><strong>Um dia flexível por semana.</strong> Escolha um dia para comer algo que gosta sem culpa. Evita compulsão por privação. Não vire o fim de semana inteiro.</div>
+    </div>
+    <div class="regra-item">
+      <div class="regra-num">7</div>
+      <div class="regra-texto"><strong>Pese-se 1x por semana.</strong> Toda segunda de manhã, em jejum. Variação diária de água vai te confundir — olhe a tendência semanal.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Plano montado com base no protocolo da <strong>Dra. Carla Mariana Ribeiro (CRN-7)</strong> · Adaptado para Jonatha · <strong>Versão 2.0 — Maio 2026</strong><br>
+  <span style="margin-top:4px;display:block">Este plano é orientação de apoio. Consulte um nutricionista para acompanhamento clínico.</span>
+</div>
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.ref-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+function toggleReceita(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.ref-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+</script>
+</body>
+</html>

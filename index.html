@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saúde CEO — Jonatha Oliveira</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde: #2D5A27;
+  --verde-light: #4A8C42;
+  --verde-bg: #EFF7EE;
+  --azul: #1A3A5C;
+  --azul-bg: #EBF2FA;
+  --laranja: #C4500A;
+  --cinza: #1A1A1A;
+  --cinza-mid: #555;
+  --cinza-light: #888;
+  --cinza-bg: #F5F4F0;
+  --branco: #FEFCF8;
+  --borda: #E0DDD6;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--branco); color: var(--cinza); min-height: 100vh; }
+
+.header {
+  background: linear-gradient(135deg, #1A3A5C 0%, #2D5A27 100%);
+  color: white;
+  padding: 4rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.hi { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+.tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.9);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 99px;
+  margin-bottom: 1.2rem;
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  margin-bottom: .6rem;
+}
+.hsub { font-size: 16px; color: rgba(255,255,255,0.7); font-weight: 300; }
+.hstats {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+.st { border-left: 2px solid rgba(255,255,255,0.3); padding-left: 1rem; }
+.stv { font-size: 22px; font-weight: 600; }
+.stl { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.main { max-width: 780px; margin: 0 auto; padding: 3rem 2rem; }
+
+.s-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cinza-light);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.s-title::after { content: ''; flex: 1; height: 1px; background: var(--borda); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+
+.card {
+  border-radius: 16px;
+  border: 1px solid var(--borda);
+  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform .2s, box-shadow .2s;
+  background: white;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.10); }
+
+.card-verde { border-top: 4px solid var(--verde); }
+.card-azul  { border-top: 4px solid var(--azul);  }
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 1.2rem;
+}
+.card-verde .card-icon { background: var(--verde-bg); }
+.card-azul  .card-icon { background: var(--azul-bg);  }
+
+.card h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: .5rem; }
+.card p  { font-size: 14px; color: var(--cinza-mid); line-height: 1.6; }
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 1.5rem;
+  font-size: 13px;
+  font-weight: 600;
+}
+.card-verde .card-footer { color: var(--verde); }
+.card-azul  .card-footer { color: var(--azul);  }
+
+.info-box {
+  background: var(--cinza-bg);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  font-size: 14px;
+  color: var(--cinza-mid);
+  line-height: 1.7;
+}
+.info-box strong { color: var(--cinza); }
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 12px;
+  color: var(--cinza-light);
+  border-top: 1px solid var(--borda);
+  margin-top: 2rem;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="hi">
+    <span class="tag">Programa Pessoal</span>
+    <h1>Saúde CEO</h1>
+    <p class="hsub">Plano integrado de alimentação e treino — Jonatha Oliveira</p>
+    <div class="hstats">
+      <div class="st">
+        <div class="stv">12 semanas</div>
+        <div class="stl">Duração do programa</div>
+      </div>
+      <div class="st">
+        <div class="stv">2 pilares</div>
+        <div class="stl">Dieta + Treino</div>
+      </div>
+      <div class="st">
+        <div class="stv">Jun 2026</div>
+        <div class="stl">Início</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <p class="s-title">Seus planos</p>
+
+  <div class="cards">
+
+    <a href="dieta_jonatha.html" class="card card-verde">
+      <div class="card-icon">🥗</div>
+      <h2>Plano Alimentar</h2>
+      <p>Protocolo nutricional personalizado com macros, refeições e estratégias para composição corporal.</p>
+      <div class="card-footer">
+        Ver plano completo
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="treino_jonatha.html" class="card card-azul">
+      <div class="card-icon">🏋️</div>
+      <h2>Plano de Treino</h2>
+      <p>Periodização semanal com séries, cargas e progressão para ganho de força e desempenho.</p>
+      <div class="card-footer">
+        Ver plano completo
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="info-box">
+    <strong>Lembre-se:</strong> Consistência supera intensidade. Siga o protocolo, ajuste quando necessário e registre sua evolução. Pequenos passos diários constroem resultados extraordinários.
+  </div>
+
+</main>
+
+<footer>
+  Saúde CEO · Programa Jonatha Oliveira · 2026
+</footer>
+
+</body>
+</html>

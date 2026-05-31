@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treino Jonatha</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#1A3A5C;--azul-bg:#EBF2FA;--verde:#2D5A27;--verde-bg:#EFF7EE;--laranja:#C4500A;--laranja-bg:#FDF0E8;--roxo:#6B3FA0;--roxo-bg:#F5F0FF;--cinza:#1A1A1A;--cinza-mid:#555;--cinza-light:#888;--cinza-bg:#F5F4F0;--branco:#FEFCF8;--borda:#E0DDD6}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--branco);color:var(--cinza)}
+.header{background:var(--azul);color:white;padding:3rem 2rem 2.5rem;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hi{max-width:780px;margin:0 auto;position:relative;z-index:1}
+.tag{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:99px;margin-bottom:1rem}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3rem);line-height:1.1;margin-bottom:.5rem}
+.hsub{font-size:15px;color:rgba(255,255,255,0.7);font-weight:300}
+.hstats{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap}
+.st{border-left:2px solid rgba(255,255,255,0.3);padding-left:1rem}
+.stv{font-size:20px;font-weight:600}
+.stl{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+.main{max-width:780px;margin:0 auto;padding:2rem}
+.s-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza-light);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.s-title::after{content:'';flex:1;height:1px;background:var(--borda)}
+.semana{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:2.5rem}
+.db{border-radius:10px;padding:.625rem .5rem;text-align:center;border:1px solid var(--borda)}
+.db.a{background:var(--azul-bg);border-color:#2A5A8C}
+.db.b{background:var(--verde-bg);border-color:#2D5A27}
+.db.c{background:var(--laranja-bg);border-color:#C4500A}
+.db.card{background:var(--roxo-bg);border-color:#6B3FA0}
+.db.tenis{background:#FFFBE6;border-color:#B8860B}
+.db.desc{background:var(--cinza-bg)}
+.dn{font-size:10px;font-weight:600;color:var(--cinza-light);text-transform:uppercase;margin-bottom:4px}
+.dt{font-size:11px;font-weight:600;line-height:1.3}
+.db.a .dt{color:#1A3A5C}.db.b .dt{color:#2D5A27}.db.c .dt{color:#C4500A}.db.card .dt{color:#6B3FA0}.db.tenis .dt{color:#B8860B}.db.desc .dt{color:var(--cinza-light)}
+.tab-bar{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab-btn{padding:8px 16px;border-radius:99px;font-size:13px;font-weight:500;border:1px solid var(--borda);background:transparent;cursor:pointer;color:var(--cinza-mid);transition:all .2s}
+.tab-btn.a.active{background:#1A3A5C;color:white;border-color:#1A3A5C}
+.tab-btn.b.active{background:#2D5A27;color:white;border-color:#2D5A27}
+.tab-btn.c.active{background:#C4500A;color:white;border-color:#C4500A}
+.tab-btn.card.active{background:#6B3FA0;color:white;border-color:#6B3FA0}
+.tab-content{display:none}.tab-content.active{display:block}
+.th{border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
+.th.a{background:var(--azul-bg)}.th.b{background:var(--verde-bg)}.th.c{background:var(--laranja-bg)}.th.card{background:var(--roxo-bg)}
+.tl{font-family:'DM Serif Display',serif;font-size:48px;line-height:1}
+.th.a .tl{color:#1A3A5C}.th.b .tl{color:#2D5A27}.th.c .tl{color:#C4500A}.th.card .tl{color:#6B3FA0}
+.tn{font-size:18px;font-weight:600;margin-bottom:3px}
+.ts{font-size:13px;color:var(--cinza-mid)}
+.badges{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
+.ba{background:#1A3A5C;color:white}.bb{background:#2D5A27;color:white}.bc{background:#C4500A;color:white}.bcard{background:#6B3FA0;color:white}.bgray{background:var(--cinza-bg);color:var(--cinza-mid)}
+.ex-card{border:1px solid var(--borda);border-radius:14px;overflow:hidden;margin-bottom:12px;background:white}
+.ex-hdr{display:flex;align-items:center;gap:12px;padding:1rem 1.25rem;cursor:pointer;user-select:none}
+.ex-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0}
+.ex-num.a{background:#1A3A5C}.ex-num.b{background:#2D5A27}.ex-num.c{background:#C4500A}.ex-num.card{background:#6B3FA0}
+.ex-meta{flex:1}
+.ex-nome{font-size:15px;font-weight:600;color:var(--cinza)}
+.ex-mus{font-size:12px;color:var(--cinza-light);margin-top:1px}
+.ex-ser{font-size:13px;font-weight:600;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.ex-ser.a{background:var(--azul-bg);color:#1A3A5C}.ex-ser.b{background:var(--verde-bg);color:#2D5A27}.ex-ser.c{background:var(--laranja-bg);color:#C4500A}.ex-ser.card{background:var(--roxo-bg);color:#6B3FA0}
+.ex-chev{font-size:20px;color:var(--cinza-light);transition:transform .25s;margin-left:4px}
+.ex-body{display:none;border-top:1px solid var(--borda)}
+.ex-body.open{display:block}
+.ex-chev.open{transform:rotate(180deg)}
+
+/* FOTO AREA */
+.foto-area{display:flex;gap:16px;padding:1rem 1.25rem 0;align-items:flex-start;flex-wrap:wrap}
+.foto-box{flex:1;min-width:220px;background:var(--cinza-bg);border-radius:12px;overflow:hidden;position:relative}
+.foto-box img{width:100%;display:block;border-radius:12px}
+.foto-label{font-size:11px;color:var(--cinza-light);text-align:center;padding:6px 0;background:var(--cinza-bg)}
+.yt-btn{display:flex;align-items:center;gap:8px;background:#FF0000;color:white;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;margin-top:8px;width:100%;justify-content:center}
+.yt-btn:hover{background:#CC0000}
+
+.ex-det{padding:1rem 1.25rem}
+.ex-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
+.ex-pill{background:var(--cinza-bg);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--cinza-mid)}
+.ex-pill strong{color:var(--cinza);display:block;font-size:14px}
+.dica{border-radius:8px;padding:.75rem 1rem;font-size:13px;line-height:1.55;margin-bottom:.75rem}
+.dica.a{background:var(--azul-bg);color:#1A3A5C}.dica.b{background:var(--verde-bg);color:#2D5A27}.dica.c{background:var(--laranja-bg);color:#6B2D06}.dica.card{background:var(--roxo-bg);color:#3D1F6B}
+.erro{background:#FFF5F5;border-radius:8px;padding:.75rem 1rem;font-size:12.5px;color:#A32D2D;line-height:1.55}
+
+.info-box{background:var(--cinza-bg);border-radius:12px;padding:1rem 1.25rem;font-size:13.5px;color:var(--cinza-mid);line-height:1.6;margin-bottom:1rem}
+.info-box strong{color:var(--cinza)}
+
+.prog-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:2rem}
+.prog-table th{background:var(--cinza-bg);padding:8px 12px;text-align:left;font-weight:600;font-size:12px;color:var(--cinza-mid)}
+.prog-table td{padding:8px 12px;border-top:1px solid var(--borda)}
+.footer{background:var(--cinza-bg);border-top:1px solid var(--borda);padding:1.5rem 2rem;text-align:center;font-size:12px;color:var(--cinza-light)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hi">
+    <div class="tag">Plano de musculação</div>
+    <h1>Treino do<br><em>Jonatha</em></h1>
+    <p class="hsub">Plano ABC · Academia completa · 08h–09h</p>
+    <div class="hstats">
+      <div class="st"><div class="stv">3x</div><div class="stl">Musculação/semana</div></div>
+      <div class="st"><div class="stv">2x</div><div class="stl">Tênis/semana</div></div>
+      <div class="st"><div class="stv">60 min</div><div class="stl">Por sessão</div></div>
+      <div class="st"><div class="stv">60–90s</div><div class="stl">Descanso entre séries</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="s-title">Semana de treinos</div>
+  <div class="semana">
+    <div class="db a"><div class="dn">Seg</div><div class="dt">Treino A</div></div>
+    <div class="db card"><div class="dn">Ter</div><div class="dt">Cardio 30min</div></div>
+    <div class="db b"><div class="dn">Qua</div><div class="dt">Treino B</div></div>
+    <div class="db tenis"><div class="dn">Qui</div><div class="dt">Tênis 🎾</div></div>
+    <div class="db c"><div class="dn">Sex</div><div class="dt">Treino C</div></div>
+    <div class="db tenis"><div class="dn">Sáb</div><div class="dt">Tênis ou caminhada</div></div>
+    <div class="db desc"><div class="dn">Dom</div><div class="dt">Descanso</div></div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn a active" onclick="switchTab('a')">Treino A — Peito & Tríceps</button>
+    <button class="tab-btn b" onclick="switchTab('b')">Treino B — Costas & Bíceps</button>
+    <button class="tab-btn c" onclick="switchTab('c')">Treino C — Pernas</button>
+    <button class="tab-btn card" onclick="switchTab('card')">Cardio</button>
+  </div>
+
+  <!-- ===== TREINO A ===== -->
+  <div class="tab-content active" id="tab-a">
+    <div class="th a">
+      <div class="tl">A</div>
+      <div>
+        <div class="tn">Peito, Ombro & Tríceps</div>
+        <div class="ts">Segunda-feira · 08h00 – 09h00</div>
+        <div class="badges">
+          <span class="badge ba">5 exercícios</span>
+          <span class="badge bgray">3 séries cada</span>
+          <span class="badge bgray">60–90s descanso</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1 Supino -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num a">1</div>
+        <div class="ex-meta"><div class="ex-nome">Supino reto com barra</div><div class="ex-mus">Peitoral · ombro anterior · tríceps</div></div>
+        <div class="ex-ser a">3 × 12</div><div class="ex-chev open">›</div>
+      </div>
+      <div class="ex-body open">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/supino-reto-com-barra.gif" alt="Supino reto com barra" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo para ver a execução</div>'">
+            <div class="foto-label">Supino reto com barra</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=rT7DgCr-3pg" target="_blank">▶ Ver execução no YouTube</a>
+            <div style="font-size:12px;color:var(--cinza-light);margin-top:8px;line-height:1.5">Assista antes de fazer — 2 minutos que evitam erro de técnica e lesão</div>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>90s</strong>Descanso</div>
+            <div class="ex-pill"><strong>Moderada</strong>Carga inicial</div>
+          </div>
+          <div class="dica a">💡 <strong>Como fazer:</strong> Deite no banco com os pés no chão. Barra um pouco mais larga que os ombros. Desce devagar até o peito, sobe expirando. Cotovelos a 45° do corpo — não abra igual a uma cruz.</div>
+          <div class="erro">⚠️ <strong>Erro mais comum:</strong> arquear demais a lombar e abrir os cotovelos a 90°. Cotovelo a 45° protege o ombro.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Crucifixo -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num a">2</div>
+        <div class="ex-meta"><div class="ex-nome">Crucifixo com halteres</div><div class="ex-mus">Peitoral — abertura e contração</div></div>
+        <div class="ex-ser a">3 × 12</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/crucifixo-com-halteres.gif" alt="Crucifixo halteres" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Crucifixo com halteres</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=eozdVDA78K0" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>60s</strong>Descanso</div>
+            <div class="ex-pill"><strong>Leve</strong>Carga</div>
+          </div>
+          <div class="dica a">💡 Deite no banco, halteres acima do peito. Abre os braços em arco (como abraçar uma árvore grande) até sentir o peitoral puxar. Fecha voltando ao centro. Carga leve — é movimento de amplitude, não força.</div>
+          <div class="erro">⚠️ Não use carga pesada. Se doer o ombro, reduza a amplitude da abertura.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Desenvolvimento -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num a">3</div>
+        <div class="ex-meta"><div class="ex-nome">Desenvolvimento com halteres (ombro)</div><div class="ex-mus">Deltóide anterior e lateral</div></div>
+        <div class="ex-ser a">3 × 12</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2021/01/desenvolvimento-com-halteres-sentado.gif" alt="Desenvolvimento halteres" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Desenvolvimento com halteres sentado</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=qEwKCR5JCog" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>90s</strong>Descanso</div>
+          </div>
+          <div class="dica a">💡 Sentado com encosto. Halteres na altura dos ombros, cotovelos dobrados. Empurra para cima até quase estender os braços. Desce controlado. Prefira sentado para proteger a lombar.</div>
+          <div class="erro">⚠️ Não arqueia as costas para empurrar. Se isso acontecer, a carga está pesada demais.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Elevação lateral -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num a">4</div>
+        <div class="ex-meta"><div class="ex-nome">Elevação lateral com halteres</div><div class="ex-mus">Deltóide lateral — ombro largo</div></div>
+        <div class="ex-ser a">3 × 15</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2021/01/elevacao-lateral-com-halteres.gif" alt="Elevação lateral" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Elevação lateral com halteres</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=3VcKaXpzqRo" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>15</strong>Reps</div>
+            <div class="ex-pill"><strong>45s</strong>Descanso</div>
+            <div class="ex-pill"><strong>Bem leve</strong>Carga</div>
+          </div>
+          <div class="dica a">💡 Em pé, halteres nas laterais. Eleva os braços até a altura dos ombros formando um "T". Sobe em 2 segundos, desce em 3 segundos. Carga muito leve — foco em sentir o músculo, não em levantar peso.</div>
+          <div class="erro">⚠️ Não balance o corpo nem suba acima do ombro. Se tiver balançando, reduza a carga.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Tríceps -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num a">5</div>
+        <div class="ex-meta"><div class="ex-nome">Tríceps na polia (corda)</div><div class="ex-mus">Tríceps braquial — parte de trás do braço</div></div>
+        <div class="ex-ser a">3 × 15</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/triceps-polia-alta-corda.gif" alt="Tríceps polia corda" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Tríceps polia alta com corda</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=vB5OHsJ3EME" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>15</strong>Reps</div>
+            <div class="ex-pill"><strong>45s</strong>Descanso</div>
+          </div>
+          <div class="dica a">💡 De frente à polia alta, segura a corda. <strong>Cotovelos colados ao lado do corpo — esse é o segredo.</strong> Empurra a corda para baixo até os braços estenderem. Sobe controlado. Se os cotovelos abrirem, você tá usando o ombro, não o tríceps.</div>
+          <div class="erro">⚠️ Cotovelo que sai do lugar = exercício errado. Reduza a carga até conseguir manter.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TREINO B ===== -->
+  <div class="tab-content" id="tab-b">
+    <div class="th b">
+      <div class="tl">B</div>
+      <div>
+        <div class="tn">Costas & Bíceps</div>
+        <div class="ts">Quarta-feira · 08h00 – 09h00</div>
+        <div class="badges">
+          <span class="badge bb">5 exercícios</span>
+          <span class="badge bgray">3 séries cada</span>
+          <span class="badge bgray">60–90s descanso</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1 Remada -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num b">1</div>
+        <div class="ex-meta"><div class="ex-nome">Remada curvada com barra</div><div class="ex-mus">Latíssimo · romboides · trapézio médio</div></div>
+        <div class="ex-ser b">3 × 12</div><div class="ex-chev open">›</div>
+      </div>
+      <div class="ex-body open">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/remada-curvada-com-barra-pronada.gif" alt="Remada curvada barra" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Remada curvada com barra</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=G8l_8chR5BE" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>90s</strong>Descanso</div>
+          </div>
+          <div class="dica b">💡 Pés afastados, joelhos levemente dobrados, tronco inclinado ~45°. Pega a barra e puxa em direção ao umbigo. Cotovelos passam reto pelas laterais. Sente as costas trabalhando, não os braços.</div>
+          <div class="erro">⚠️ Não curve a coluna. Costas retas durante todo o movimento — é o erro que mais machuca.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Puxada -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num b">2</div>
+        <div class="ex-meta"><div class="ex-nome">Puxada frontal na polia (pulley)</div><div class="ex-mus">Latíssimo do dorso — costas em V</div></div>
+        <div class="ex-ser b">3 × 12</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/puxada-frontal-polia.gif" alt="Puxada frontal pulley" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Puxada frontal na polia</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=CAwf7n6Luuc" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>90s</strong>Descanso</div>
+          </div>
+          <div class="dica b">💡 Sentado, joelhos presos no apoio. Barra larga, pegada um pouco mais que os ombros. Puxa para baixo até tocar o peito inclinando levemente o tronco para trás. Sobe controlado sem soltar de vez.</div>
+          <div class="erro">⚠️ Não jogue o tronco para trás para ajudar. Se estiver fazendo isso, a carga está pesada demais.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Remada cavalinho -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num b">3</div>
+        <div class="ex-meta"><div class="ex-nome">Remada cavalinho (máquina)</div><div class="ex-mus">Costas médias · romboides</div></div>
+        <div class="ex-ser b">3 × 12</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/remada-maquina-cavalinho.gif" alt="Remada cavalinho máquina" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Remada cavalinho na máquina</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=GZbfZ033f74" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>60s</strong>Descanso</div>
+          </div>
+          <div class="dica b">💡 Apoie o peito no suporte. Pega as alças e puxa abrindo os cotovelos para o lado. No final do movimento aperta as escápulas — segura 1 segundo contraído antes de soltar.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Rosca direta -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num b">4</div>
+        <div class="ex-meta"><div class="ex-nome">Rosca direta com barra ou halteres</div><div class="ex-mus">Bíceps braquial</div></div>
+        <div class="ex-ser b">3 × 12</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/rosca-direta-com-barra.gif" alt="Rosca direta barra" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Rosca direta com barra</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=ykJmrZ5v0Oo" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>60s</strong>Descanso</div>
+          </div>
+          <div class="dica b">💡 Em pé, <strong>cotovelos fixos ao lado do corpo — esse é o segredo do bíceps.</strong> Sobe a barra flexionando o cotovelo, desce controlado até quase estender. Não balance o corpo.</div>
+          <div class="erro">⚠️ Balançar o corpo tira o trabalho do bíceps e machuca a lombar. Reduza a carga se estiver balançando.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Rosca martelo -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num b">5</div>
+        <div class="ex-meta"><div class="ex-nome">Rosca martelo com halteres</div><div class="ex-mus">Bíceps · braquial · antebraço</div></div>
+        <div class="ex-ser b">3 × 12</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/rosca-martelo-com-halteres.gif" alt="Rosca martelo" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Rosca martelo com halteres</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=zC3nLlEvin4" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>60s</strong>Descanso</div>
+          </div>
+          <div class="dica b">💡 Igual à rosca direta mas o halter fica na posição neutra — polegar para cima, como segurar um martelo. Pode alternar os braços. Trabalha uma parte diferente do bíceps e o antebraço.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TREINO C ===== -->
+  <div class="tab-content" id="tab-c">
+    <div class="th c">
+      <div class="tl">C</div>
+      <div>
+        <div class="tn">Pernas & Glúteo</div>
+        <div class="ts">Sexta-feira · 08h00 – 09h00</div>
+        <div class="badges">
+          <span class="badge bc">5 exercícios</span>
+          <span class="badge bgray">3–4 séries cada</span>
+          <span class="badge bgray">90s–2min descanso</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">⚡ <strong>Treino de perna é o mais importante para emagrecer.</strong> Os músculos das pernas são os maiores do corpo — trabalhar eles queima muito mais caloria que qualquer outro treino. Não pule a sexta.</div>
+
+    <!-- 1 Leg press -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num c">1</div>
+        <div class="ex-meta"><div class="ex-nome">Leg press 45°</div><div class="ex-mus">Quadríceps · glúteo · isquiotibiais</div></div>
+        <div class="ex-ser c">4 × 12</div><div class="ex-chev open">›</div>
+      </div>
+      <div class="ex-body open">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/leg-press-45.gif" alt="Leg press 45" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Leg press 45°</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=IZxyjW7MPJQ" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>4</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>90s</strong>Descanso</div>
+          </div>
+          <div class="dica c">💡 Deite na máquina, pés na plataforma na largura dos ombros. Solta o trava, dobra os joelhos até ~90° e empurra de volta. Não trave os joelhos no topo. Costas sempre encostadas no banco.</div>
+          <div class="erro">⚠️ Joelhos não podem fechar para dentro. Se fechar, reduza a carga. Joelhos sempre alinhados com os pés.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Cadeira extensora -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num c">2</div>
+        <div class="ex-meta"><div class="ex-nome">Cadeira extensora</div><div class="ex-mus">Quadríceps — foco total</div></div>
+        <div class="ex-ser c">3 × 15</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/cadeira-extensora.gif" alt="Cadeira extensora" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Cadeira extensora</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=YyvSfVjQeL0" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>15</strong>Reps</div>
+            <div class="ex-pill"><strong>60s</strong>Descanso</div>
+          </div>
+          <div class="dica c">💡 Ajuste o banco para a coxa ficar apoiada com o joelho na borda. Estende as pernas até quase retas — segura 1 segundo no topo. Desce controlado, não deixa cair.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Stiff -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num c">3</div>
+        <div class="ex-meta"><div class="ex-nome">Stiff com halteres</div><div class="ex-mus">Posterior da coxa · glúteo</div></div>
+        <div class="ex-ser c">3 × 12</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/stiff-com-halteres.gif" alt="Stiff halteres" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Stiff com halteres</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=1uDiW5--rAE" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>12</strong>Reps</div>
+            <div class="ex-pill"><strong>90s</strong>Descanso</div>
+          </div>
+          <div class="dica c">💡 Em pé com halteres na frente das coxas. Inclina o tronco para frente mantendo as costas retas e joelhos quase estendidos. Desce até sentir o puxão no posterior da coxa. Sobe contraindo o glúteo.</div>
+          <div class="erro">⚠️ Não curve a coluna. Não precisa chegar ao chão — vai até onde seu alongamento permite.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Cadeira flexora -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num c">4</div>
+        <div class="ex-meta"><div class="ex-nome">Cadeira flexora (mesa flexora)</div><div class="ex-mus">Posterior da coxa — isquiotibiais</div></div>
+        <div class="ex-ser c">3 × 15</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/mesa-flexora.gif" alt="Mesa flexora" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Mesa flexora</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=Orxowest56U" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>3</strong>Séries</div>
+            <div class="ex-pill"><strong>15</strong>Reps</div>
+            <div class="ex-pill"><strong>60s</strong>Descanso</div>
+          </div>
+          <div class="dica c">💡 Deite de barriga para baixo. Calcanhares sob o rolo. Puxa os calcanhares em direção ao glúteo. Desce controlado — não deixa cair com o peso.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Panturrilha -->
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num c">5</div>
+        <div class="ex-meta"><div class="ex-nome">Panturrilha em pé na máquina</div><div class="ex-mus">Gastrocnêmio · sóleo</div></div>
+        <div class="ex-ser c">4 × 20</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="foto-area">
+          <div class="foto-box">
+            <img src="https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/panturrilha-em-pe-maquina.gif" alt="Panturrilha máquina" onerror="this.parentElement.innerHTML='<div style=\'padding:2rem;text-align:center;color:var(--cinza-light);font-size:13px\'>Abra o vídeo abaixo</div>'">
+            <div class="foto-label">Panturrilha na máquina</div>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=-M4-G8p1fCI" target="_blank">▶ Ver execução no YouTube</a>
+          </div>
+        </div>
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>4</strong>Séries</div>
+            <div class="ex-pill"><strong>20</strong>Reps</div>
+            <div class="ex-pill"><strong>45s</strong>Descanso</div>
+          </div>
+          <div class="dica c">💡 Sobe na ponta do pé o mais alto possível — segura 1 segundo. Desce até sentir o alongamento na panturrilha. Movimento completo vale mais que carga pesada.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CARDIO ===== -->
+  <div class="tab-content" id="tab-card">
+    <div class="th card">
+      <div class="tl">♥</div>
+      <div>
+        <div class="tn">Cardio — Terça-feira</div>
+        <div class="ts">08h00 – 08h40 · zona de queima de gordura</div>
+        <div class="badges">
+          <span class="badge bcard">30–40 min</span>
+          <span class="badge bgray">FC 60–70%</span>
+          <span class="badge bgray">Ritmo confortável</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-box">🎾 <strong>O tênis já é seu melhor cardio.</strong> Quinta e sábado você já queima muito jogando tênis. Na terça o objetivo é cardio moderado — zona de gordura, não exaustão. Com 130kg evite corrida — protege os joelhos.</div>
+
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num card">1</div>
+        <div class="ex-meta"><div class="ex-nome">Esteira — caminhada com inclinação</div><div class="ex-mus">Melhor custo-benefício pra queimar gordura sem impacto</div></div>
+        <div class="ex-ser card">30–40 min</div><div class="ex-chev open">›</div>
+      </div>
+      <div class="ex-body open">
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>5–6 km/h</strong>Velocidade</div>
+            <div class="ex-pill"><strong>8–12%</strong>Inclinação</div>
+            <div class="ex-pill"><strong>30–40 min</strong>Duração</div>
+          </div>
+          <div class="dica card">💡 Caminhada inclinada queima quase tanto quanto corrida sem o impacto nas articulações. Vai aumentando a inclinação conforme for ficando mais condicionado. Se tiver monitorando frequência cardíaca, mantenha entre 60–70% da máxima (220 – sua idade).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card">
+      <div class="ex-hdr" onclick="tog(this)">
+        <div class="ex-num card">2</div>
+        <div class="ex-meta"><div class="ex-nome">Bicicleta ergométrica</div><div class="ex-mus">Alternativa à esteira — zero impacto</div></div>
+        <div class="ex-ser card">30–40 min</div><div class="ex-chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="ex-det">
+          <div class="ex-row">
+            <div class="ex-pill"><strong>Nível 6–8</strong>Resistência</div>
+            <div class="ex-pill"><strong>30–40 min</strong>Duração</div>
+          </div>
+          <div class="dica card">💡 Boa opção se os joelhos estiverem doendo ou quiser variar. Aumenta a resistência progressivamente semana a semana.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESSÃO -->
+  <div class="s-title" style="margin-top:2rem">Progressão por semana</div>
+  <table class="prog-table">
+    <thead><tr><th>Semana</th><th>Foco</th><th>Séries × Reps</th><th>Carga</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1–2</strong></td><td>Adaptação — aprender os movimentos</td><td>3 × 12</td><td>Leve — técnica primeiro</td></tr>
+      <tr><td><strong>3–4</strong></td><td>Volume — aumentar carga</td><td>3 × 12</td><td>Moderada — última rep difícil</td></tr>
+      <tr><td><strong>5–6</strong></td><td>Intensidade — adicionar 1 série</td><td>4 × 10</td><td>Moderada-pesada</td></tr>
+      <tr><td><strong>7–8</strong></td><td>Força — menos reps, mais carga</td><td>4 × 8</td><td>Pesada com boa técnica</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box"><strong>Regra de ouro:</strong> quando conseguir fazer todas as reps de todas as séries com boa técnica, é hora de aumentar a carga. Aumenta 2,5kg por vez — não mais.</div>
+</div>
+
+<div class="footer">
+  Plano de treino personalizado para Jonatha · <strong>Versão 2.0 — Maio 2026</strong><br>
+  <span style="margin-top:4px;display:block">Assista os vídeos antes de cada exercício nas primeiras semanas.</span>
+</div>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelector('.tab-btn.'+id).classList.add('active');
+}
+function tog(hdr){
+  const body=hdr.nextElementSibling;
+  const chev=hdr.querySelector('.ex-chev');
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  chev.classList.toggle('open',!open);
+}
+</script>
+</body>
+</html>
