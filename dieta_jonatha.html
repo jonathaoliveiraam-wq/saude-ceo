@@ -164,9 +164,25 @@ body { font-family: 'DM Sans', sans-serif; background: var(--branco); color: var
 
 .footer { background: var(--cinza-bg); border-top: 1px solid var(--borda); padding: 1.5rem 2rem; text-align: center; font-size: 12px; color: var(--cinza-light); }
 .footer strong { color: var(--cinza-mid); }
+
+.topnav { background: white; border-bottom: 1px solid var(--borda); padding: .75rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.topnav-home { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--cinza-mid); text-decoration: none; }
+.topnav-home:hover { color: var(--verde); }
+.topnav-other { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--azul); text-decoration: none; background: var(--azul-bg); padding: 6px 14px; border-radius: 99px; }
+.topnav-other:hover { background: #d0e5f7; }
 </style>
 </head>
 <body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-home">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    Saúde CEO
+  </a>
+  <a href="treino_jonatha.html" class="topnav-other">
+    🏋️ Ver Treino
+  </a>
+</nav>
 
 <div class="header">
   <div class="header-inner">
